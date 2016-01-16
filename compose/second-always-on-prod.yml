@@ -1,0 +1,22 @@
+ftp:
+    extends:
+        file: first-always-on-prod.yml
+        service: ftp
+    env_file:
+        - envSecond
+
+logger:
+    extends:
+        file: first-always-on-prod.yml
+        service: logger
+    env_file:
+        - envSecond
+
+lsyncd:
+    net: compose
+    extends:
+        file: first-always-on-prod.yml
+        service: lsyncd
+    env_file:
+        - envSecond
+

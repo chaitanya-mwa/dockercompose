@@ -1,0 +1,39 @@
+ftp:
+    cpu_shares: 100
+    net: host
+    volumes:
+        - /home/fm:/home
+        - /home/fm/proftpd/ftpd.passwd:/etc/proftpd/ftpd.passwd
+    extends:
+        file: common.yml
+        service: common
+    build: ../../vipconsult/docker/proftpd/
+
+logger:
+    cpu_shares: 100
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+    extends:
+        file: common.yml
+        service: common
+    image: sematext/spm-agent-docker
+lsyncd:
+    cpu_shares: 100
+    # so that can increase fs.inotify.max_user_watches
+    privileged: true
+    volumes:
+        # share the same keys on all containers so that no ssh config is needed
+        - /home/fm/lsyncd/.ssh:/root/.ssh
+        # sync the  key pair as well
+        - /home/fm/lsyncd/.ssh:/sync/.ssh
+        - /home/fm/proftpd:/sync/proftpd
+        - /home/fm/http/default:/sync/http/default
+        - /home/fm/http/fullertreacymoney.com:/sync/http/fullertreacymoney.com
+        - /home/fm/dataserver:/sync/dataserver
+        - /home/fm/tomcat:/sync/tomcat  
+        # for the php5 file sessions (although we now use the db for the sessions)     
+        - /tmp/sessions:/sync/sessions        
+    extends:
+        file: common.yml
+        service: common
+    build: ../../vipconsult/docker/lsyncd/
