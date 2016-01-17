@@ -8,7 +8,7 @@ nginx:
     extends:
         file: common.yml
         service: common
-    build: ../../vipconsult/docker/nginx/
+    build: ../../../vipconsult/docker/nginx/
     # command: ping google.com
 
 tomcat:
@@ -35,6 +35,8 @@ php53:
         # - /lib/x86_64-linux-gnu/libdevmapper.so.1.02.1:/lib/x86_64-linux-gnu/libdevmapper.so.1.02.1
         # - /lib/x86_64-linux-gnu/libudev.so.1:/lib/x86_64-linux-gnu/libudev.so.1
         # - /lib/x86_64-linux-gnu/libc.so.6:/lib/libc.so.6
+    # entrypoint: ['/bin/bash','-c']
+    # command: ['ping google.com']
     extends:
         file: common.yml
         service: common
@@ -51,7 +53,7 @@ php5:
     extends:
         file: common.yml
         service: common
-    build: ../../vipconsult/docker/php5/
+    build: ../../../vipconsult/docker/php5/
 
 smtp:
     cpu_shares: 100
@@ -61,7 +63,7 @@ smtp:
     # so that when we restart the container the mailq is not lost
     volumes:
         - /home/fm/exim:/var/spool/exim4
-    build: ../../vipconsult/docker/smtp/
+    build: ../../../vipconsult/docker/smtp/
     
 mariadb:
     cpu_shares: 512
@@ -73,7 +75,7 @@ mariadb:
     extends:
         file: common.yml
         service: common
-    build: ../../vipconsult/docker/mariadb/
+    build: ../../../vipconsult/docker/mariadb/
     #entrypoint: /bin/bash
     #command: ping google.com 
 cron:  
@@ -85,7 +87,7 @@ cron:
     extends:
         file: common.yml
         service: common
-    build: ../../vipconsult/docker/cron/
+    build: ../../../vipconsult/docker/cron/
 
 # backup_client:
 #     net: host  

@@ -1,10 +1,19 @@
 FROM vipconsult/php:5.3
 
-# not sure if these modules are needed but exists on the old server
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN \
+    # needed to install an older version of ffmpeg that supports converting from rm to mp3
+    echo "deb http://www.deb-multimedia.org squeeze main non-free" >> /etc/apt/sources.list && \
+    echo "deb http://www.deb-multimedia.org squeeze-backports main" >> /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install deb-multimedia-keyring && \
+    apt-get update && apt-get install -y --no-install-recommends \
+    # fuller's audio files conversion
+    ffmpeg \
     curl \
+    # needed to build some of the php packages (trader)
     make \
     gcc \
+    # not sure if some of these modules are needed but exists on the old server
     php5-xsl \
     php5-imap \
     php5-sqlite \

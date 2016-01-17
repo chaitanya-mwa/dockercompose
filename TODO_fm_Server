@@ -3,7 +3,7 @@
 setup spf and dkim for the emails
 
 
-
+disable wormly monitoring
 set the monitoring with site24x7  test and cloudflare dns changes
 
 

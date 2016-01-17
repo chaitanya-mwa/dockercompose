@@ -1,4 +1,4 @@
-# composeFM
+# FM server schema
 
 
 ![alt tag](https://github.com/prioactiveinvestors/composeFM/blob/master/schema.png)
@@ -47,10 +47,7 @@ DEV SERVERS
 ```
 
 NOTES
-  if you get an error 
-    php_network_getaddresses: getaddrinfo failed: Name or service not known Array in /home/http/fullertreacymoney.com/www/public/system/vendors/Zend/Session.php, line 482
-  this is because at start the hostname of MEMCACHED_SERVER_second cannot resolve. Either commens out the var in env file make sure it resolves by starting the second server as well.
-
+  currently only the first server runs cron jobs so if it is down than the cron jobs need be started on the second server
   if the second_mariadb doesn't start delete .sst and sst_in_progress files
   when adding new node it might refuse to start if the master is in recover state. on master run RESET MASTER ; and then start the node to be added. alternatevly try specifing the run command as : mysqld --tc-heuristic-recover=commit
 
@@ -63,6 +60,8 @@ NOTES
 
   chmod 777 -R /home/fm/http/fullertreacymoney.com/chart/public/app/webroot/thumbs
   chmod 777 -R /home/fm/http/fullertreacymoney.com/chart/public/app/webroot/upload
-  chmod 777 -R  /home/fm/http/fullertreacymoney.com/chart/public/app/tmp/
+  chmod 777 -R /home/fm/http/fullertreacymoney.com/chart/public/app/tmp/
+  chmod 777 -R /home/fm/http/fullertreacymoney.com/www/public/system/data
+
   chown team:nogroup -R  /home/fm/http/fullertreacymoney.com/chart/public/
   chown team:nogroup -R  /home/fm/http/fullertreacymoney.com/www/public/

@@ -7,7 +7,7 @@ ftp:
     extends:
         file: common.yml
         service: common
-    build: ../../vipconsult/docker/proftpd/
+    build: ../../../vipconsult/docker/proftpd/
 
 logger:
     cpu_shares: 100
@@ -36,4 +36,4 @@ lsyncd:
     extends:
         file: common.yml
         service: common
-    build: ../../vipconsult/docker/lsyncd/
+    build: ../../../vipconsult/docker/lsyncd/
