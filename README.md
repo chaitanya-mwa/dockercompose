@@ -74,22 +74,27 @@ SETUP LOCAL DEV
 
 git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/www/git ...../fm/http/fullertreacymoney.com/www
 git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/chart/git ...../fm/http/fullertreacymoney.com/chart
+git clone https://github.com/prioactiveinvestors/fmServer.git ...../fm/server
+git clone https://github.com/vipconsult/dockerfiles.git ...../vipconsult/docker
 
 rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ ...../fm/http/default
 rsync -vza --stats --progress --exclude=galera.cache  root@51.255.67.13:/home/fm/mysql/ ..../fm/mysql
 
+
+```
 .../fm
-      server
-        compose
-        docker
-      mysql
-      http
-        default
-        fullertreacymoney.com
-          www
-          chart
+        server
+            compose
+            docker
+        mysql
+        http
+            default
+            fullertreacymoney.com
+            www
+            chart
     vipconsul
-      docker
+        docker
+```
 
 
 
