@@ -1,11 +1,12 @@
 # TODO fm server
 
-setup spf and dkim for the emails
+convert $ch = curl_init("http://chart.fullertreacymoney.com/swift/destroyUserSession/$id");
+							$ch = curl_init("http://".CHART_URL."/swift/destroyUserSession/$id");
+take the env from vpn file  /http/fullertreacymoney.com/www/public/site/fuller/config/env/vpn.php
 
+deleting the audio doesn't delete the converted mp3 file
 
 disable wormly monitoring
-set the monitoring with site24x7  test and cloudflare dns changes
-
 
 	rsync --stats --progress --exclude 'journal' --exclude 'log' -vrz --size-only --dry-run -e "ssh -p 2288"   root@208.43.232.174:/home/dataserver/ /home/fm/dataserver/
 
@@ -48,9 +49,9 @@ set the monitoring with site24x7  test and cloudflare dns changes
 	/http/fullertreacymoney.com/www/public/site/fuller/config/env/vpn.php
 	http://dev.www.fullertreacymoney.com/manager  -> content -> sitemap (second Chart Library , last Comments of the Day)
 
+
 after the deployment test the emails 
 
-after the import check the sequence numbers
 
 JAVA logs rotation
 

@@ -31,8 +31,6 @@ lsyncd:
         - /home/fm/http/fullertreacymoney.com:/sync/http/fullertreacymoney.com
         - /home/fm/dataserver:/sync/dataserver
         - /home/fm/tomcat:/sync/tomcat  
-        # for the php5 file sessions (although we now use the db for the sessions)     
-        - /tmp/sessions:/sync/sessions        
     extends:
         file: common.yml
         service: common

@@ -31,11 +31,15 @@ PROD SERVERS
     eval $(docker-machine env fm-first)
     docker-compose -f first-prod.yml build
     docker-compose --x-networking --x-network-driver overlay -f first-prod.yml up -d
+    
+    docker-compose -f first-always-on-prod.yml build
     docker-compose --x-networking --x-network-driver overlay -f first-always-on-prod.yml   up -d
   **second server**
     eval $(docker-machine env fm-second)
     docker-compose -f second-prod.yml --project-name second build
     docker-compose --x-networking --x-network-driver overlay -f second-prod.yml --project-name second  up -d
+
+    docker-compose -f second-always-on-prod.yml --project-name second build
     docker-compose --x-networking --x-network-driver overlay -f second-always-on-prod.yml --project-name second  up -d
   **backup**
     eval $(docker-machine env   pai-backup)
@@ -65,3 +69,27 @@ NOTES
 
   chown team:nogroup -R  /home/fm/http/fullertreacymoney.com/chart/public/
   chown team:nogroup -R  /home/fm/http/fullertreacymoney.com/www/public/
+
+SETUP LOCAL DEV
+
+git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/www/git ...../fm/http/fullertreacymoney.com/www
+git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/chart/git ...../fm/http/fullertreacymoney.com/chart
+
+rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ ...../fm/http/default
+rsync -vza --stats --progress --exclude=galera.cache  root@51.255.67.13:/home/fm/mysql/ ..../fm/mysql
+
+.../fm
+      server
+        compose
+        docker
+      mysql
+      http
+        default
+        fullertreacymoney.com
+          www
+          chart
+    vipconsul
+      docker
+
+
+

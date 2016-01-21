@@ -1,0 +1,92 @@
+nginx:
+    cpu_shares: 256
+    ports:
+        - "80:80"
+        - "443:443"
+    volumes:
+        - ../http:/home/http
+    extends:
+        file: common.yml
+        service: common
+    build: ../../../vipconsult/docker/nginx/
+    env_file:
+        - envDev
+
+tomcat:
+    cpu_shares: 128
+    volumes:
+        - ../tomcat/webapps:/usr/local/tomcat/webapps:ro
+        - ../tomcat/webapps/ChartingServerStuff:/var/lib/easy-tomcat7/ChartingServerStuff:ro
+        - ../tomcat/conf:/usr/local/tomcat/conf:ro
+        - ../dataserver/:/home/dataserver
+    extends:
+        file: common.yml
+        service: common
+    image: tomcat:7-jre7
+    env_file:
+        - envDev
+php53:
+    cpu_shares: 256
+    volumes:
+        - ../http:/home/http
+        - /tmp/sessions:/tmp
+        - ../dataserver:/home/dataserver
+        # # so that the php can run the java app inside the tomcat server container
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+    extends:
+        file: common.yml
+        service: common
+    build: ../docker/php53/
+    env_file:
+        - envDev
+
+
+php5:
+    cpu_shares: 256
+    volumes:
+        - ../http:/home/http
+        - /tmp/sessions:/tmp
+    extends:
+        file: common.yml
+        service: common
+    build: ../../../vipconsult/docker/php5/
+    env_file:
+        - envDev
+
+smtp:
+    cpu_shares: 100
+    extends:
+        file: common.yml
+        service: common
+    # so that when we restart the container the mailq is not lost
+    volumes:
+        - ../exim:/var/spool/exim4
+    build: ../../../vipconsult/docker/smtp/
+    env_file:
+        - envDev
+
+mariadb:
+    cpu_shares: 512
+    ports:
+        # so that we can connect to the mysql server via a ssh tunnel
+        - 127.0.0.1:3306:3306 
+    volumes:
+        - ../mysql:/var/lib/mysql
+    extends:
+        file: common.yml
+        service: common
+    build: ../../../vipconsult/docker/mariadb/
+    env_file:
+        - envDev 
+cron:  
+    cpu_shares: 100
+    volumes:
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+        - /usr/bin/docker:/usr/bin/docker:ro
+        - /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1:ro
+    extends:
+        file: common.yml
+        service: common
+    build: ../../../vipconsult/docker/cron/
+    env_file:
+        - envDev
