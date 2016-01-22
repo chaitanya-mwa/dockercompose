@@ -70,18 +70,9 @@ NOTES
   chown team:nogroup -R  /home/fm/http/fullertreacymoney.com/chart/public/
   chown team:nogroup -R  /home/fm/http/fullertreacymoney.com/www/public/
 
+
+
 SETUP LOCAL DEV
-
-git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/www/git ...../fm/http/fullertreacymoney.com/www
-git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/chart/git ...../fm/http/fullertreacymoney.com/chart
-git clone https://github.com/prioactiveinvestors/fmServer.git ...../fm/server
-git clone https://github.com/vipconsult/dockerfiles.git ...../vipconsult/docker
-
-rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ ...../fm/http/default
-rsync -vza --stats --progress --exclude=galera.cache  root@51.255.67.13:/home/fm/mysql/ ..../fm/mysql
-
-rsync -vza --stats --progress --exclude=chart_fullermoney --exclude=galera.cache  root@51.255.67.13:/home/fm/mysql/ /Users/krasimir/projects/fm/mysql
-
 
 ```
 .../fm
@@ -97,6 +88,14 @@ rsync -vza --stats --progress --exclude=chart_fullermoney --exclude=galera.cache
     vipconsul
         docker
 ```
+git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/www/git ...../fm/http/fullertreacymoney.com/www
+git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/chart/git ...../fm/http/fullertreacymoney.com/chart
+git clone https://github.com/prioactiveinvestors/fmServer.git ...../fm/server
+git clone https://github.com/vipconsult/dockerfiles.git ...../vipconsult/docker
+
+sudo rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ ...../fm/http/default
+sudo rsync -vza --stats --progress --exclude=galera.cache  root@51.255.67.13:/home/fm/mysql/ ..../fm/mysql
+
 
 
 

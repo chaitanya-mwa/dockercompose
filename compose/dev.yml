@@ -78,15 +78,15 @@ mariadb:
     build: ../../../vipconsult/docker/mariadb/
     env_file:
         - envDev 
-cron:  
-    cpu_shares: 100
-    volumes:
-        - /var/run/docker.sock:/var/run/docker.sock:ro
-        - /usr/bin/docker:/usr/bin/docker:ro
-        - /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1:ro
-    extends:
-        file: common.yml
-        service: common
-    build: ../../../vipconsult/docker/cron/
-    env_file:
-        - envDev
+# cron:  
+#     cpu_shares: 100
+#     volumes:
+#         - /var/run/docker.sock:/var/run/docker.sock:ro
+#         - /usr/bin/docker:/usr/bin/docker:ro
+#         - /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1:ro
+#     extends:
+#         file: common.yml
+#         service: common
+#     build: ../../../vipconsult/docker/cron/
+#     env_file:
+#         - envDev
