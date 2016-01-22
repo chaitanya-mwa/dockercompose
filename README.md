@@ -75,26 +75,30 @@ NOTES
 SETUP LOCAL DEV
 
 ```
-.../fm
-        server
-            compose
-            docker
-        mysql
-        http
-            default
-            fullertreacymoney.com
-            www
-            chart
-    vipconsul
-        docker
+...projects
+          fm
+              server
+                  compose
+                  docker
+              mysql
+              http
+                  default
+                  fullertreacymoney.com
+                  www
+                  chart
+          vipconsul
+              docker
 ```
-git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/www/git ...../fm/http/fullertreacymoney.com/www
-git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/chart/git ...../fm/http/fullertreacymoney.com/chart
-git clone https://github.com/prioactiveinvestors/fmServer.git ...../fm/server
-git clone https://github.com/vipconsult/dockerfiles.git ...../vipconsult/docker
+git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/www/git ...../projects/fm/http/fullertreacymoney.com/www
+git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/chart/git ...../projects/fm/http/fullertreacymoney.com/chart
+git clone https://github.com/prioactiveinvestors/fmServer.git ...../projects/fm/server
+git clone https://github.com/vipconsult/dockerfiles.git ...../projects/vipconsult/docker
 
-sudo rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ ...../fm/http/default
-sudo rsync -vza --stats --progress --exclude=galera.cache  root@51.255.67.13:/home/fm/mysql/ ..../fm/mysql
+sudo rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ ...../projects/fm/http/default
+sudo rsync -vza --stats --progress --exclude=galera.cache  root@51.255.67.13:/home/fm/mysql/ ..../projects/fm/mysql
+
+cd ..../projects/fm/server/compose
+docker-compose --x-networking -f dev.yml up -d
 
 
 
