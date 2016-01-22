@@ -80,6 +80,8 @@ git clone https://github.com/vipconsult/dockerfiles.git ...../vipconsult/docker
 rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ ...../fm/http/default
 rsync -vza --stats --progress --exclude=galera.cache  root@51.255.67.13:/home/fm/mysql/ ..../fm/mysql
 
+rsync -vza --stats --progress --exclude=chart_fullermoney --exclude=galera.cache  root@51.255.67.13:/home/fm/mysql/ /Users/krasimir/projects/fm/mysql
+
 
 ```
 .../fm

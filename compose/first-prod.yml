@@ -26,15 +26,10 @@ php53:
     cpu_shares: 256
     volumes:
         - /home/fm/http:/home/http
-        - /tmp/sessions:/tmp
         - /home/fm/dataserver:/home/dataserver
-        # # so that the php can run the java app inside the tomcat server container
+        # # so that the php can run the java app that pulls the BB data inside the tomcat server container 
+        #(this is run using the php exec() on the backend cms /manager)
         - /var/run/docker.sock:/var/run/docker.sock:ro
-        # - /usr/bin/docker:/usr/bin/docker:ro
-        # - /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1:ro
-        # - /lib/x86_64-linux-gnu/libdevmapper.so.1.02.1:/lib/x86_64-linux-gnu/libdevmapper.so.1.02.1
-        # - /lib/x86_64-linux-gnu/libudev.so.1:/lib/x86_64-linux-gnu/libudev.so.1
-        # - /lib/x86_64-linux-gnu/libc.so.6:/lib/libc.so.6
     # entrypoint: ['/bin/bash','-c']
     # command: ['ping google.com']
     extends:
@@ -64,7 +59,7 @@ smtp:
     volumes:
         - /home/fm/exim:/var/spool/exim4
     build: ../../../vipconsult/docker/smtp/
-    
+
 mariadb:
     cpu_shares: 512
     ports:

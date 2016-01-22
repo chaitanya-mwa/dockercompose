@@ -4,7 +4,7 @@ nginx:
         - "80:80"
         - "443:443"
     volumes:
-        - ../http:/home/http
+        - ../../http:/home/http
     extends:
         file: common.yml
         service: common
@@ -15,10 +15,9 @@ nginx:
 tomcat:
     cpu_shares: 128
     volumes:
-        - ../tomcat/webapps:/usr/local/tomcat/webapps:ro
-        - ../tomcat/webapps/ChartingServerStuff:/var/lib/easy-tomcat7/ChartingServerStuff:ro
-        - ../tomcat/conf:/usr/local/tomcat/conf:ro
-        - ../dataserver/:/home/dataserver
+        - ../../tomcat/webapps:/usr/local/tomcat/webapps:ro
+        - ../../tomcat/webapps/ChartingServerStuff:/var/lib/easy-tomcat7/ChartingServerStuff:ro
+        - ../../tomcat/conf:/usr/local/tomcat/conf:ro
     extends:
         file: common.yml
         service: common
@@ -28,9 +27,8 @@ tomcat:
 php53:
     cpu_shares: 256
     volumes:
-        - ../http:/home/http
-        - /tmp/sessions:/tmp
-        - ../dataserver:/home/dataserver
+        - ../../http:/home/http
+        - ../../dataserver:/home/dataserver
         # # so that the php can run the java app inside the tomcat server container
         - /var/run/docker.sock:/var/run/docker.sock:ro
     extends:
@@ -39,12 +37,14 @@ php53:
     build: ../docker/php53/
     env_file:
         - envDev
+    # entrypoint: ['/bin/bash','-c']
+    # command: ['ping google.com']
 
 
 php5:
     cpu_shares: 256
     volumes:
-        - ../http:/home/http
+        - ../../http:/home/http
         - /tmp/sessions:/tmp
     extends:
         file: common.yml
@@ -60,7 +60,7 @@ smtp:
         service: common
     # so that when we restart the container the mailq is not lost
     volumes:
-        - ../exim:/var/spool/exim4
+        - ../../exim:/var/spool/exim4
     build: ../../../vipconsult/docker/smtp/
     env_file:
         - envDev
@@ -71,7 +71,7 @@ mariadb:
         # so that we can connect to the mysql server via a ssh tunnel
         - 127.0.0.1:3306:3306 
     volumes:
-        - ../mysql:/var/lib/mysql
+        - ../../mysql:/var/lib/mysql
     extends:
         file: common.yml
         service: common
