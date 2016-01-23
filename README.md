@@ -99,6 +99,23 @@ git clone https://github.com/vipconsult/dockerfiles.git vipconsult/docker
 mkdir -p fm/http/fullertreacymoney.com/chart/public/app/tmp/cache/models
 mkdir -p fm/http/fullertreacymoney.com/chart/public/app/tmp/cache/persistent
 chmod -R 777 fm/http/fullertreacymoney.com/chart/public/app/tmp
+chown -R YOURUSER projects
+
+#add a hook to change permissions on every merge
+```
+  nano fm/http/fullertreacymoney.com/www/.git/hooks/post-merge
+  #!/bin/sh
+  sudo -R chmod 777 ./public/system/data
+  sudo -R chown YOURUSER ./
+
+  nano fm/http/fullertreacymoney.com/chart/.git/hooks/post-merge
+  #!/bin/sh
+  sudo chmod 777 -R ./public/app/webroot/thumbs
+  sudo chmod 777 -R ./public/app/webroot/upload
+  sudo chmod 777 -R ./public/app/tmp/
+  sudo chown -R YOURUSER ./
+
+```
 
 sudo rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ fm/http/default
 
