@@ -62,13 +62,13 @@ NOTES
     cd /lib/modules/r1soft/ && wget -c http://repo.r1soft.com/modules/Debian_8_x64/hcpdriver-cki-3.16.0-4-amd64.ko && /etc/init.d/cdp-agent restart 
 
 
-  chmod 777 -R /home/fm/http/fullertreacymoney.com/chart/public/app/webroot/thumbs
-  chmod 777 -R /home/fm/http/fullertreacymoney.com/chart/public/app/webroot/upload
-  chmod 777 -R /home/fm/http/fullertreacymoney.com/chart/public/app/tmp/
-  chmod 777 -R /home/fm/http/fullertreacymoney.com/www/public/system/data
+  chmod  -R 777 /home/fm/http/fullertreacymoney.com/chart/public/app/webroot/thumbs
+  chmod  -R 777 /home/fm/http/fullertreacymoney.com/chart/public/app/webroot/upload
+  chmod  -R 777 /home/fm/http/fullertreacymoney.com/chart/public/app/tmp/
+  chmod  -R 777 /home/fm/http/fullertreacymoney.com/www/public/system/data
 
-  chown team:nogroup -R  /home/fm/http/fullertreacymoney.com/chart/public/
-  chown team:nogroup -R  /home/fm/http/fullertreacymoney.com/www/public/
+  chown  -R team:nogroup /home/fm/http/fullertreacymoney.com/chart/public/
+  chown  -R team:nogroup /home/fm/http/fullertreacymoney.com/www/public/
 
 
 
@@ -89,15 +89,23 @@ SETUP LOCAL DEV
           vipconsul
               docker
 ```
-git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/www/git ...../projects/fm/http/fullertreacymoney.com/www
-git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/chart/git ...../projects/fm/http/fullertreacymoney.com/chart
-git clone https://github.com/prioactiveinvestors/fmServer.git ...../projects/fm/server
-git clone https://github.com/vipconsult/dockerfiles.git ...../projects/vipconsult/docker
 
-sudo rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ ...../projects/fm/http/default
-sudo rsync -vza --stats --progress --exclude=galera.cache  root@51.255.67.13:/home/fm/mysql/ ..../projects/fm/mysql
+cd to ..../projects 
+git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/www/git fm/http/fullertreacymoney.com/www
+git clone ssh://root@51.255.67.13/home/fm/http/fullertreacymoney.com/chart/git fm/http/fullertreacymoney.com/chart
+git clone https://github.com/prioactiveinvestors/fmServer.git fm/server
+git clone https://github.com/vipconsult/dockerfiles.git vipconsult/docker
 
-cd ..../projects/fm/server/compose
+mkdir -p fm/http/fullertreacymoney.com/chart/public/app/tmp/cache/models
+mkdir -p fm/http/fullertreacymoney.com/chart/public/app/tmp/cache/persistent
+chmod -R 777 fm/http/fullertreacymoney.com/chart/public/app/tmp
+
+sudo rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ fm/http/default
+
+download the data for the mysql from the backup server
+create the envDev file for compose
+
+cd fm/server/compose
 docker-compose --x-networking -f dev.yml up -d
 
 

@@ -66,10 +66,10 @@ smtp:
         - envDev
 
 mariadb:
+    privileged: true
     cpu_shares: 512
     ports:
-        # so that we can connect to the mysql server via a ssh tunnel
-        - 127.0.0.1:3306:3306 
+        - 3306:3306 
     volumes:
         - ../../mysql:/var/lib/mysql
     extends:
@@ -78,6 +78,7 @@ mariadb:
     build: ../../../vipconsult/docker/mariadb/
     env_file:
         - envDev 
+
 # cron:  
 #     cpu_shares: 100
 #     volumes:
