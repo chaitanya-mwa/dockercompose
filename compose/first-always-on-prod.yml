@@ -27,8 +27,7 @@ lsyncd:
         # sync the  key pair as well
         - /home/fm/lsyncd/.ssh:/sync/.ssh
         - /home/fm/proftpd:/sync/proftpd
-        - /home/fm/http/default:/sync/http/default
-        - /home/fm/http/fullertreacymoney.com:/sync/http/fullertreacymoney.com
+        - /home/fm/http:/sync/http
         - /home/fm/dataserver:/sync/dataserver
         - /home/fm/tomcat:/sync/tomcat  
     extends:

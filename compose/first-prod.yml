@@ -5,6 +5,7 @@ nginx:
         - "443:443"
     volumes:
         - /home/fm/http:/home/http
+        - /tmp/ngx_pagespeed_cache:/tmp/ngx_pagespeed_cache
     extends:
         file: common.yml
         service: common

@@ -34,6 +34,9 @@ php53:
     extends:
         file: common.yml
         service: common
+    # so we can use xdebugger
+    ports:
+        - "9000:9000"
     build: ../docker/php53/
     env_file:
         - envDev

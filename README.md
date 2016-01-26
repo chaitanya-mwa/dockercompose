@@ -34,6 +34,7 @@ PROD SERVERS
     
     docker-compose -f first-always-on-prod.yml build
     docker-compose --x-networking --x-network-driver overlay -f first-always-on-prod.yml   up -d
+  
   **second server**
     eval $(docker-machine env fm-second)
     docker-compose -f second-prod.yml --project-name second build
@@ -41,6 +42,7 @@ PROD SERVERS
 
     docker-compose -f second-always-on-prod.yml --project-name second build
     docker-compose --x-networking --x-network-driver overlay -f second-always-on-prod.yml --project-name second  up -d
+  
   **backup**
     eval $(docker-machine env   pai-backup)
     docker-compose -f backup-prod.yml --x-networking up -d consul
@@ -62,17 +64,13 @@ NOTES
     cd /lib/modules/r1soft/ && wget -c http://repo.r1soft.com/modules/Debian_8_x64/hcpdriver-cki-3.16.0-4-amd64.ko && /etc/init.d/cdp-agent restart 
 
 
-  chmod  -R 777 /home/fm/http/fullertreacymoney.com/chart/public/app/webroot/thumbs
-  chmod  -R 777 /home/fm/http/fullertreacymoney.com/chart/public/app/webroot/upload
-  chmod  -R 777 /home/fm/http/fullertreacymoney.com/chart/public/app/tmp/
-  chmod  -R 777 /home/fm/http/fullertreacymoney.com/www/public/system/data
 
-  chown  -R team:nogroup /home/fm/http/fullertreacymoney.com/chart/public/
-  chown  -R team:nogroup /home/fm/http/fullertreacymoney.com/www/public/
+  ram tmp dir for the nginx pagespeed module
+  tmpfs /tmp/ngx_pagespeed_cache tmpfs size=1024m,mode=0777,uid=root,gid=nogroup 0 0
 
 
 
-SETUP LOCAL DEV
+#SETUP LOCAL DEV
 
 ```
 ...projects
@@ -101,7 +99,7 @@ mkdir -p fm/http/fullertreacymoney.com/chart/public/app/tmp/cache/persistent
 chmod -R 777 fm/http/fullertreacymoney.com/chart/public/app/tmp
 chown -R YOURUSER projects
 
-#add a hook to change permissions on every merge
+add a hook to change permissions on every merge
 ```
   nano fm/http/fullertreacymoney.com/www/.git/hooks/post-merge
   #!/bin/sh
