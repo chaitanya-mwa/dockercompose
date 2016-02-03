@@ -73,7 +73,7 @@ NOTES
 #SETUP LOCAL DEV
 
 ```
-...projects
+.../Users/yourUsername/projects
           fm
               server
                   compose
@@ -118,7 +118,9 @@ add a hook to change permissions on every merge
 sudo rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ fm/http/default
 
 download the data for the mysql from the backup server
-create the envDev file for compose
+create the envDev file for compose (also an empty env as common.yml needs it)
+
+docker-machine create fm-local
 
 cd fm/server/compose
 docker-compose --x-networking -f dev.yml up -d

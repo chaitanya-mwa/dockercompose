@@ -45,17 +45,6 @@ php53:
     # entrypoint: ['/bin/bash','-c']
     # command: ['ping google.com']
 
-php52:
-    cpu_shares: 256
-    volumes:
-        - ../../http:/home/http
-    extends:
-        file: common.yml
-        service: common
-    image: tommylau/php-5.2
-    env_file:
-        - envDev
-
 php5:
     cpu_shares: 256
     volumes:
