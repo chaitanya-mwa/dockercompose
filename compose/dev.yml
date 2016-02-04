@@ -1,13 +1,11 @@
 nginx:
+    restart: always
     cpu_shares: 256
     ports:
         - "80:80"
         - "443:443"
     volumes:
         - ../../http:/home/http
-    extends:
-        file: common.yml
-        service: common
     build: ../../../vipconsult/docker/nginx/
     env_file:
         - envDev
@@ -15,27 +13,23 @@ nginx:
     # command: ['ping google.com']
 
 tomcat:
+    restart: always
     cpu_shares: 128
     volumes:
         - ../../tomcat/webapps:/usr/local/tomcat/webapps:ro
         - ../../tomcat/webapps/ChartingServerStuff:/var/lib/easy-tomcat7/ChartingServerStuff:ro
         - ../../tomcat/conf:/usr/local/tomcat/conf:ro
-    extends:
-        file: common.yml
-        service: common
     image: tomcat:7-jre7
     env_file:
         - envDev
 php53:
+    restart: always
     cpu_shares: 256
     volumes:
         - ../../http:/home/http
         - ../../dataserver:/home/dataserver
         # # so that the php can run the java app inside the tomcat server container
         - /var/run/docker.sock:/var/run/docker.sock:ro
-    extends:
-        file: common.yml
-        service: common
     # so we can use xdebugger
     ports:
         - "9000:9000"
@@ -46,22 +40,18 @@ php53:
     # command: ['ping google.com']
 
 php5:
+    restart: always
     cpu_shares: 256
     volumes:
         - ../../http:/home/http
         - /tmp/sessions:/tmp
-    extends:
-        file: common.yml
-        service: common
     build: ../../../vipconsult/docker/php5/
     env_file:
         - envDev
 
 smtp:
+    restart: always
     cpu_shares: 100
-    extends:
-        file: common.yml
-        service: common
     # so that when we restart the container the mailq is not lost
     volumes:
         - ../../exim:/var/spool/exim4
@@ -70,15 +60,12 @@ smtp:
         - envDev
 
 mariadb:
-    privileged: true
+    restart: always
     cpu_shares: 512
     ports:
         - 3306:3306 
     volumes:
         - ../../mysql:/var/lib/mysql
-    extends:
-        file: common.yml
-        service: common
     build: ../../../vipconsult/docker/mariadb/
     env_file:
         - envDev 
