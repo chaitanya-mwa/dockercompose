@@ -30,6 +30,7 @@ ADD entrypoint1.sh /entrypoint1.sh
 # set correct permissions and make sure lines are ended with unix new line
 RUN chmod 777 /entrypoint1.sh \
     && chmod 777 /entrypoint.sh \
-    && sed -i -e 's/\r$//' /entrypoint1.sh && sed -i -e 's/\r$//' /entrypoint.sh
+    && sed -i -e 's/\r$//' /entrypoint1.sh \
+    && sed -i -e 's/\r$//' /entrypoint.sh
 ENTRYPOINT ["/entrypoint1.sh"]
 CMD ["/usr/sbin/php5-fpm", "-c","/etc/php5/fpm"]

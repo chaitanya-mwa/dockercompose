@@ -116,6 +116,7 @@ add a hook to change permissions on every merge
 ```
 # use scp instead of rsync because resync doesn't exist in windows mingw
 scp -vr root@51.255.67.13:/home/fm/http/default fm/http/
+scp -vr root@51.255.67.13:/home/fm/dataserver fm/
 
 download the data for the mysql from the backup server
 create the envDev file for compose (also an empty env as common.yml needs it)
