@@ -82,8 +82,8 @@ NOTES
               http
                   default
                   fullertreacymoney.com
-                  www
-                  chart
+                      www
+                      chart
           vipconsul
               docker
 ```
@@ -114,13 +114,14 @@ add a hook to change permissions on every merge
   sudo chown -R YOURUSER ./
 
 ```
-
-sudo rsync -vza --stats --progress root@51.255.67.13:/home/fm/http/default/ fm/http/default
+# use scp instead of rsync because resync doesn't exist in windows mingw
+scp -vr root@51.255.67.13:/home/fm/http/default fm/http/
 
 download the data for the mysql from the backup server
 create the envDev file for compose (also an empty env as common.yml needs it)
 
-docker-machine create fm-local
+docker-machine create --driver virtualbox fm-local
+eval $(docker-machine env fm-local)
 
 cd fm/server/compose
 docker-compose --x-networking -f dev.yml up -d
