@@ -124,7 +124,7 @@ docker-machine create --driver virtualbox fm-local
 eval $(docker-machine env fm-local)
 
 cd fm/server/compose
-docker-compose --x-networking -f dev.yml up -d
+docker-compose -f dev.yml up -d
 
 
 
