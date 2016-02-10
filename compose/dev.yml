@@ -1,5 +1,4 @@
 version: '2'
-network_mode: bridge
 services:
     nginx:
         restart: always
