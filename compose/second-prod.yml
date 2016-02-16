@@ -1,41 +1,48 @@
-nginx:
-    extends:
-        file: first-prod.yml
-        service: nginx
-    env_file:
-        - envSecond
+version: '2'
+services:
+    nginx:
+        container_name: second_nginx_1
+        extends:
+            file: first-prod.yml
+            service: nginx
+        env_file:
+            - envSecond
 
-tomcat:
-    extends:
-        file: first-prod.yml
-        service: tomcat
-    env_file:
-        - envSecond
-php53:
-    extends:
-        file: first-prod.yml
-        service: php53
-    env_file:
-        - envSecond
+    tomcat:
+        container_name: second_tomcat_1
+        extends:
+            file: first-prod.yml
+            service: tomcat
+        env_file:
+            - envSecond
+    php53:
+        container_name: second_php53_1
+        extends:
+            file: first-prod.yml
+            service: php53
+        env_file:
+            - envSecond
+    smtp:
+        container_name: second_smtp_1
+        extends:
+            file: first-prod.yml
+            service: smtp
+        env_file:
+            - envSecond
 
-smtp:
-    extends:
-        file: first-prod.yml
-        service: smtp
-    env_file:
-        - envSecond
-    
-mariadb:
-    extends:
-        file: first-prod.yml
-        service: mariadb
-    env_file:
-        - envSecond
-    #command: ping google.com
+    mariadb:
+        container_name: second_mariadb_1
+        extends:
+            file: first-prod.yml
+            service: mariadb
+        env_file:
+            - envSecond
+        #command: ping google.com
 
-cron:  
-    extends:
-        file: first-prod.yml
-        service: cron
-    env_file:
-        - envSecond
+    cron:  
+        container_name: second_cron_1
+        extends:
+            file: first-prod.yml
+            service: cron
+        env_file:
+            - envSecond

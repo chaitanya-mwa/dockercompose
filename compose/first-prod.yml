@@ -1,103 +1,105 @@
-nginx:
-    cpu_shares: 256
-    ports:
-        - "80:80"
-        - "443:443"
-    volumes:
-        - /home/fm/http:/home/http
-        - /tmp/ngx_pagespeed_cache:/tmp/ngx_pagespeed_cache
-    extends:
-        file: common.yml
-        service: common
-    build: ../../../vipconsult/docker/nginx/
-    # command: ping google.com
+version: '2'
+services:
+    nginx:
+        cpu_shares: 256
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - /home/fm/http:/home/http
+            - /tmp/ngx_pagespeed_cache:/tmp/ngx_pagespeed_cache
+        extends:
+            file: common.yml
+            service: common
+        build: ../../../vipconsult/docker/nginx/
+        # command: ping google.com
 
-tomcat:
-    cpu_shares: 128
-    volumes:
-        - /home/fm/tomcat/webapps:/usr/local/tomcat/webapps:ro
-        - /home/fm/tomcat/webapps/ChartingServerStuff:/var/lib/easy-tomcat7/ChartingServerStuff:ro
-        - /home/fm/tomcat/conf:/usr/local/tomcat/conf:ro
-        - /home/fm/dataserver/:/home/dataserver
-    extends:
-        file: common.yml
-        service: common
-    image: tomcat:7-jre7
-php53:
-    cpu_shares: 256
-    volumes:
-        - /home/fm/http:/home/http
-        - /home/fm/dataserver:/home/dataserver
-        # # so that the php can run the java app that pulls the BB data inside the tomcat server container 
-        #(this is run using the php exec() on the backend cms /manager)
-        - /var/run/docker.sock:/var/run/docker.sock:ro
-    # entrypoint: ['/bin/bash','-c']
-    # command: ['ping google.com']
-    extends:
-        file: common.yml
-        service: common
-    build: ../docker/php53/
-    # entrypoint: ['/bin/bash','-c']
-    # command: ['ping google.com'] 
+    tomcat:
+        cpu_shares: 128
+        volumes:
+            - /home/fm/tomcat/webapps:/usr/local/tomcat/webapps:ro
+            - /home/fm/tomcat/webapps/ChartingServerStuff:/var/lib/easy-tomcat7/ChartingServerStuff:ro
+            - /home/fm/tomcat/conf:/usr/local/tomcat/conf:ro
+            - /home/fm/dataserver/:/home/dataserver
+        extends:
+            file: common.yml
+            service: common
+        image: tomcat:7-jre7
+    php53:
+        cpu_shares: 256
+        volumes:
+            - /home/fm/http:/home/http
+            - /home/fm/dataserver:/home/dataserver
+            # # so that the php can run the java app that pulls the BB data inside the tomcat server container 
+            #(this is run using the php exec() on the backend cms /manager)
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        # entrypoint: ['/bin/bash','-c']
+        # command: ['ping google.com']
+        extends:
+            file: common.yml
+            service: common
+        build: ../docker/php53/
+        # entrypoint: ['/bin/bash','-c']
+        # command: ['ping google.com'] 
 
 
-php5:
-    cpu_shares: 256
-    volumes:
-        - /home/fm/http:/home/http
-        - /tmp/sessions:/tmp
-    extends:
-        file: common.yml
-        service: common
-    build: ../../../vipconsult/docker/php5/
+    php5:
+        cpu_shares: 256
+        volumes:
+            - /home/fm/http:/home/http
+            - /tmp/sessions:/tmp
+        extends:
+            file: common.yml
+            service: common
+        build: ../../../vipconsult/docker/php5/
 
-smtp:
-    cpu_shares: 100
-    extends:
-        file: common.yml
-        service: common
-    # so that when we restart the container the mailq is not lost
-    volumes:
-        - /home/fm/exim:/var/spool/exim4
-    build: ../../../vipconsult/docker/smtp/
+    smtp:
+        cpu_shares: 100
+        extends:
+            file: common.yml
+            service: common
+        # so that when we restart the container the mailq is not lost
+        volumes:
+            - /home/fm/exim:/var/spool/exim4
+        build: ../../../vipconsult/docker/smtp/
 
-mariadb:
-    cpu_shares: 512
-    ports:
-        # so that we can connect to the mysql server via a ssh tunnel
-        - 127.0.0.1:3306:3306 
-    volumes:
-        - /home/fm/mysql:/var/lib/mysql
-    extends:
-        file: common.yml
-        service: common
-    build: ../../../vipconsult/docker/mariadb/
-    #entrypoint: /bin/bash
-    #command: ping google.com 
-cron:  
-    cpu_shares: 100
-    volumes:
-        - /var/run/docker.sock:/var/run/docker.sock:ro
-        - /usr/bin/docker:/usr/bin/docker:ro
-        - /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1:ro
-    extends:
-        file: common.yml
-        service: common
-    build: ../../../vipconsult/docker/cron/
+    mariadb:
+        cpu_shares: 512
+        ports:
+            # so that we can connect to the mysql server via a ssh tunnel
+            - 127.0.0.1:3306:3306 
+        volumes:
+            - /home/fm/mysql:/var/lib/mysql
+        extends:
+            file: common.yml
+            service: common
+        build: ../../../vipconsult/docker/mariadb/
+        #entrypoint: /bin/bash
+        #command: ping google.com 
+    cron:  
+        cpu_shares: 100
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - /usr/bin/docker:/usr/bin/docker:ro
+            - /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1:ro
+        extends:
+            file: common.yml
+            service: common
+        build: ../../../vipconsult/docker/cron/
 
-# backup_client:
-#     net: host  
-#     cpu_shares: 50
-#     privileged: true
-#     cap_add:
-#         - ALL
-#     volumes:
-#         - /dev:/dev
-#         - /lib/modules:/lib/modules
-#         # - /home/fm/r1soft/client:/usr/sbin/r1soft/conf
-#     extends:
-#         file: common.yml
-#         service: common
-#     build: ../../vipconsult/docker/cdpClient/
-#     entrypoint: ['/bin/bash','-c']
-#     command: ['ping google.com'] 
+    # backup_client:
+    #     net: host  
+    #     cpu_shares: 50
+    #     privileged: true
+    #     cap_add:
+    #         - ALL
+    #     volumes:
+    #         - /dev:/dev
+    #         - /lib/modules:/lib/modules
+    #         # - /home/fm/r1soft/client:/usr/sbin/r1soft/conf
+    #     extends:
+    #         file: common.yml
+    #         service: common
+    #     build: ../../vipconsult/docker/cdpClient/
+    #     entrypoint: ['/bin/bash','-c']
+    #     command: ['ping google.com'] 

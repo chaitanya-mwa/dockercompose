@@ -1,22 +1,26 @@
-ftp:
-    extends:
-        file: first-always-on-prod.yml
-        service: ftp
-    env_file:
-        - envSecond
+version: '2'
+services:
+    ftp:
+        container_name: second_ftp_1
+        extends:
+            file: first-always-on-prod.yml
+            service: ftp
+        env_file:
+            - envSecond
 
-logger:
-    extends:
-        file: first-always-on-prod.yml
-        service: logger
-    env_file:
-        - envSecond
+    logger:
+        container_name: second_logger_1
+        extends:
+            file: first-always-on-prod.yml
+            service: logger
+        env_file:
+            - envSecond
 
-lsyncd:
-    net: compose
-    extends:
-        file: first-always-on-prod.yml
-        service: lsyncd
-    env_file:
-        - envSecond
+    lsyncd:
+        container_name: second_lsyncd_1
+        extends:
+            file: first-always-on-prod.yml
+            service: lsyncd
+        env_file:
+            - envSecond
 

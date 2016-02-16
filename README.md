@@ -30,23 +30,23 @@ PROD SERVERS
   (for initial deployment need to bootstrap new mysql so uncomment #MYSQL_PRIMARY=1 in the env file)
     eval $(docker-machine env fm-first)
     docker-compose -f first-prod.yml build
-    docker-compose --x-networking --x-network-driver overlay -f first-prod.yml up -d
+    docker-compose -f first-prod.yml up -d
     
     docker-compose -f first-always-on-prod.yml build
-    docker-compose --x-networking --x-network-driver overlay -f first-always-on-prod.yml   up -d
+    docker-compose -f first-always-on-prod.yml   up -d
   
   **second server**
     eval $(docker-machine env fm-second)
-    docker-compose -f second-prod.yml --project-name second build
-    docker-compose --x-networking --x-network-driver overlay -f second-prod.yml --project-name second  up -d
+    docker-compose -f second-prod.yml build
+    docker-compose -f second-prod.yml up -d
 
-    docker-compose -f second-always-on-prod.yml --project-name second build
-    docker-compose --x-networking --x-network-driver overlay -f second-always-on-prod.yml --project-name second  up -d
+    docker-compose -f second-always-on-prod.yml build
+    docker-compose -f second-always-on-prod.yml up -d
   
   **backup**
     eval $(docker-machine env   pai-backup)
-    docker-compose -f backup-prod.yml --x-networking up -d consul
-    docker-compose --x-networking --x-network-driver overlay -f backup-prod.yml  up -d garbd backup-manager
+    docker-compose -f backup-prod.yml up -d consul
+    docker-compose -f backup-prod.yml up -d garbd backup-manager
 
 DEV SERVERS
 
@@ -96,6 +96,7 @@ git clone https://github.com/vipconsult/dockerfiles.git vipconsult/docker
 
 mkdir -p fm/http/fullertreacymoney.com/chart/public/app/tmp/cache/models
 mkdir -p fm/http/fullertreacymoney.com/chart/public/app/tmp/cache/persistent
+mkdir -p fm/http/fullertreacymoney.com/www/public/system/vendors/Thumb/cache
 chmod -R 777 fm/http/fullertreacymoney.com/chart/public/app/tmp
 chown -R YOURUSER projects
 
@@ -125,8 +126,15 @@ docker-machine create --driver virtualbox fm-local
 eval $(docker-machine env fm-local)
 
 cd fm/server/compose
+docker-compose -f dev.yml build
 docker-compose -f dev.yml up -d
 
+docker-machine ip fm-local
+hosts file 
+192.168.99.100 www.fullertreacymoney.com chart.fullertreacymoney.com
+test using  - ping www.fullertreacymoney.com - should return 192.168.99.100
+
+NOTES: to save time and space - git pull doesn't pull the audio files and the article images so these will be missing
 
 
 

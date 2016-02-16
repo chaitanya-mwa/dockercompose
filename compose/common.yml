@@ -1,8 +1,14 @@
-common:
-    net: compose
-    restart: always
-    volumes:
-        - /etc/localtime:/etc/localtime:ro
-        - /etc/timezone:/etc/timezone:ro
-    env_file:
-        - env
+version: '2'
+services:
+    common:
+        restart: always
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /etc/timezone:/etc/timezone:ro
+        env_file:
+            - env
+        
+networks:
+    default:
+        external:
+            name: compose_default

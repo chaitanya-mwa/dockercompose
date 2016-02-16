@@ -1,55 +1,57 @@
-consul:
-    net: host
-    cpu_shares: 512
-    # ports:
-    #     - "8400:8400"
-    #     - "8500:8500"
-    #     - "8600:53"
-    volumes:
-        - /home/fm/consul:/data
-        # for the ssl keys
-        - /etc/docker:/etc/docker
-    extends:
-        file: common.yml
-        service: common
-    build: ../../../vipconsult/docker/gliderlabs-docker-consul/0.6/consul-server
-    command: -bootstrap
-    # entrypoint: /bin/sh
-    # command: -c "ping google.com"
+version: '2'
+services:
+    consul:
+        network_mode: "host"
+        cpu_shares: 512
+        # ports:
+        #     - "8400:8400"
+        #     - "8500:8500"
+        #     - "8600:53"
+        volumes:
+            - /home/fm/consul:/data
+            # for the ssl keys
+            - /etc/docker:/etc/docker
+        extends:
+            file: common.yml
+            service: common
+        build: ../../../vipconsult/docker/gliderlabs-docker-consul/0.6/consul-server
+        command: -bootstrap
+        # entrypoint: /bin/sh
+        # command: -c "ping google.com"
 
-# # r1soft need this to send email alerts
-# smtp:
-#     extends:
-#         file: common.yml
-#         service: common
-#     # so that when we restart the container the mailq is not lost
-#     volumes:
-#         - /home/fm/exim:/var/spool/exim4
-#     build: ../../vipconsult/docker/smtp/
+    # # r1soft need this to send email alerts
+    # smtp:
+    #     extends:
+    #         file: common.yml
+    #         service: common
+    #     # so that when we restart the container the mailq is not lost
+    #     volumes:
+    #         - /home/fm/exim:/var/spool/exim4
+    #     build: ../../vipconsult/docker/smtp/
 
-garbd:
-    # net: compose
-    cpu_shares: 512
-    volumes:
-        - /home/fm/garbd:/data
-    extends:
-        file: common.yml
-        service: common
-    build: ../../../vipconsult/docker/garbd/
+    garbd:
+        # net: compose
+        cpu_shares: 512
+        volumes:
+            - /home/fm/garbd:/data
+        extends:
+            file: common.yml
+            service: common
+        build: ../../../vipconsult/docker/garbd/
 
-backup-manager:
-    cpu_shares: 512
-    privileged: true
-    volumes:
-         - /home/fm/r1soft/server/conf:/usr/sbin/r1soft/confHost
-         - /home/fm/r1soft/server/data:/usr/sbin/r1soft/data
-    ports:
-        - "80:80"
-        - "443:443"
-    extends:
-        file: common.yml
-        service: common
-    build: ../../../vipconsult/docker/cdpManager/
-    # entrypoint: ['/bin/bash','-c']
-    # command: ['ping google.com'] 
+    backup-manager:
+        cpu_shares: 512
+        privileged: true
+        volumes:
+             - /home/fm/r1soft/server/conf:/usr/sbin/r1soft/confHost
+             - /home/fm/r1soft/server/data:/usr/sbin/r1soft/data
+        ports:
+            - "80:80"
+            - "443:443"
+        extends:
+            file: common.yml
+            service: common
+        build: ../../../vipconsult/docker/cdpManager/
+        # entrypoint: ['/bin/bash','-c']
+        # command: ['ping google.com'] 
 
