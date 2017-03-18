@@ -22,6 +22,14 @@ services:
             service: php53
         env_file:
             - envSecond
+    # for phpmyadmin
+    php5:
+        container_name: second_php5_1
+        extends:
+            file: first-prod.yml
+            service: php5
+        env_file:
+            - envSecond
     smtp:
         container_name: second_smtp_1
         extends:
@@ -37,12 +45,22 @@ services:
             service: mariadb
         env_file:
             - envSecond
-        #command: ping google.com
-
-    cron:  
-        container_name: second_cron_1
+        # command: ping google.com
+    garbd:
+        container_name: second_garbd_1
         extends:
             file: first-prod.yml
-            service: cron
-        env_file:
-            - envSecond
+            service: garbd
+    cron:  
+        container_name: second_cron_1
+        cpu_shares: 100
+        environment:
+            - DOCKER_API_VERSION=1.23
+            # split the smtp log
+            - CRONTASK_1=    0 12 * * *      root docker exec second_smtp_1 bash -c "exicyclog && chmod -R 777 /var/log/exim4/"
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        extends:
+            file: common.yml
+            service: common
+        build: ../../../vipconsult/docker/cron/

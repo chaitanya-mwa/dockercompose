@@ -21,6 +21,7 @@ services:
             - ../../tomcat/webapps:/usr/local/tomcat/webapps:ro
             - ../../tomcat/webapps/ChartingServerStuff:/var/lib/easy-tomcat7/ChartingServerStuff:ro
             - ../../tomcat/conf:/usr/local/tomcat/conf:ro
+            - ../../dataserver:/home/dataserver:ro
         image: tomcat:7-jre7
         env_file:
             - envDev

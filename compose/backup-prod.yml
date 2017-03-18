@@ -30,7 +30,7 @@ services:
     #     build: ../../vipconsult/docker/smtp/
 
     garbd:
-        # net: compose
+        container_name: backup_garbd_1
         cpu_shares: 512
         volumes:
             - /home/fm/garbd:/data
@@ -51,7 +51,8 @@ services:
         extends:
             file: common.yml
             service: common
-        build: ../../../vipconsult/docker/cdpManager/
+        image: compose_backup-manager
         # entrypoint: ['/bin/bash','-c']
         # command: ['ping google.com'] 
+
 

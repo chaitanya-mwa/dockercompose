@@ -13,7 +13,6 @@ services:
             service: common
         build: ../../../vipconsult/docker/nginx/
         # command: ping google.com
-
     tomcat:
         cpu_shares: 128
         volumes:
@@ -24,6 +23,8 @@ services:
         extends:
             file: common.yml
             service: common
+        ports:
+            - "8080:8080"
         image: tomcat:7-jre7
     php53:
         cpu_shares: 256
@@ -41,8 +42,8 @@ services:
         build: ../docker/php53/
         # entrypoint: ['/bin/bash','-c']
         # command: ['ping google.com'] 
-
-
+        domainname: php5container
+    
     php5:
         cpu_shares: 256
         volumes:
@@ -58,6 +59,8 @@ services:
         extends:
             file: common.yml
             service: common
+        ports:    
+            - 127.0.0.1:25:25 
         # so that when we restart the container the mailq is not lost
         volumes:
             - /home/fm/exim:/var/spool/exim4
@@ -76,16 +79,49 @@ services:
         build: ../../../vipconsult/docker/mariadb/
         #entrypoint: /bin/bash
         #command: ping google.com 
+    garbd:
+        cpu_shares: 256
+        volumes:
+            - /home/fm/garbd:/data
+        extends:
+            file: common.yml
+            service: common
+        build: ../../../vipconsult/docker/garbd/
+
     cron:  
         cpu_shares: 100
+        environment:
+            #- CRON_EMAIL=devs@fullertreacymoney.com
+            - DOCKER_API_VERSION=1.23
+            # split the smtp log
+            - CRONTASK_1=    0 12 * * *      root docker exec compose_smtp_1 bash -c "exicyclog && chmod -R 777 /var/log/exim4/"
+            - CRONTASK_2=    10 * * * *      root docker run --rm --net=host -v /home/fm/dataserver:/home/dataserver java:7-jre bash -c "export MYSQL_SERVER=127.0.0.1 && /home/dataserver/get_daily_data.sh"
+            - CRONTASK_3=    30 0 * * *      root docker run --rm --net=host -v /home/fm/dataserver:/home/dataserver java:7-jre bash -c "export MYSQL_SERVER=127.0.0.1 && /home/dataserver/get_daily_data.sh"
+            - CRONTASK_4=    20 * * * *      root docker run --rm --net=host -v /home/fm/dataserver:/home/dataserver java:7-jre bash -c "export MYSQL_SERVER=127.0.0.1 && /home/dataserver/get_daily_data_cc.sh"
+            - CRONTASK_5=    40 0 * * *      root docker run --rm --net=host -v /home/fm/dataserver:/home/dataserver java:7-jre bash -c "export MYSQL_SERVER=127.0.0.1 && /home/dataserver/get_daily_data_cc.sh"
+            - CRONTASK_6=    30 5 * * *      root docker run --rm --net=host -v /home/fm/dataserver:/home/dataserver java:7-jre bash -c "export MYSQL_SERVER=127.0.0.1 && /home/dataserver/cc_ignoresync/get_cc_ignoresync.sh"
+            - CRONTASK_7=    05 0,12 * * *   root docker run --rm --net=host -v /home/fm/dataserver:/home/dataserver java:7-jre bash -c "export MYSQL_SERVER=127.0.0.1 && /home/dataserver/get_ticker_change.sh"
+            - CRONTASK_8=     15 12 * * * root docker run --rm --net=host --entrypoint="./entrypoint.sh" -v /home/fm/dataserver:/home/dataserver -v /home/fm/http:/home/http compose_php53 bash -c  "export MYSQL_SERVER=127.0.0.1 && export SMTP_SERVER=127.0.0.1 && ./entrypoint.sh php /home/http/fullertreacymoney.com/chart/public/cron/check_daily_data.php"
+            - CRONTASK_9=     25 4 * * *  root docker run --rm --net=host --entrypoint="./entrypoint.sh" -v /home/fm/dataserver:/home/dataserver -v /home/fm/http:/home/http compose_php53 bash -c  "export MYSQL_SERVER=127.0.0.1 && export SMTP_SERVER=127.0.0.1 && ./entrypoint.sh php /home/http/fullertreacymoney.com/chart/public/cron/check_instruments_status.php"
+            - CRONTASK_10=    5 3 * * *   root docker run --rm --net=host --entrypoint="./entrypoint.sh" -v /home/fm/dataserver:/home/dataserver -v /home/fm/http:/home/http compose_php53 bash -c  "export MYSQL_SERVER=127.0.0.1 && export SMTP_SERVER=127.0.0.1 && ./entrypoint.sh php /home/http/fullertreacymoney.com/chart/public/cron/check_daily_BB_requests.php"
+            - CRONTASK_11=    40 * * * *  root docker run --rm --net=host --entrypoint="./entrypoint.sh" -v /home/fm/dataserver:/home/dataserver -v /home/fm/http:/home/http compose_php53 bash -c  "export MYSQL_SERVER=127.0.0.1 && export SMTP_SERVER=127.0.0.1 && ./entrypoint.sh php /home/http/fullertreacymoney.com/chart/public/cron/check_blocked_instruments.php"
+            - CRONTASK_12=    21 * * * *  root docker run --rm --net=host --entrypoint="./entrypoint.sh" -v /home/fm/dataserver:/home/dataserver -v /home/fm/http:/home/http compose_php53 bash -c  "export MYSQL_SERVER=127.0.0.1 && export SMTP_SERVER=127.0.0.1 && ./entrypoint.sh php /home/http/fullertreacymoney.com/chart/public/cron/unlock_running_instruments.php"
+            - CRONTASK_13=    59 23 * * * root docker run --rm --net=host --entrypoint="./entrypoint.sh" -v /home/fm/dataserver:/home/dataserver -v /home/fm/http:/home/http compose_php53 bash -c  "export MYSQL_SERVER=127.0.0.1 && export SMTP_SERVER=127.0.0.1 && ./entrypoint.sh php /home/http/fullertreacymoney.com/chart/public/cron/unlock_running_instruments.php"
+            - CRONTASK_14=    25 0 * * * root docker run --rm --net=host --entrypoint="./entrypoint.sh" -v /home/fm/dataserver:/home/dataserver -v /home/fm/http:/home/http compose_php53 bash -c  "export MYSQL_SERVER=127.0.0.1 && export SMTP_SERVER=127.0.0.1 && ./entrypoint.sh php /home/http/fullertreacymoney.com/chart/public/cron/ticker_change_checker.php"
+            # # we need this is it has a limit of emails per call
+            - CRONTASK_15=    * 4-11 * * 2-6  root docker run --rm --net=host --entrypoint="./entrypoint.sh" -v /home/fm/dataserver:/home/dataserver -v /home/fm/http:/home/http compose_php53 bash -c  "export MYSQL_SERVER=127.0.0.1 && export SMTP_SERVER=127.0.0.1 && ./entrypoint.sh php /home/http/fullertreacymoney.com/www/public/index.php module=frontpage controller=Cron action=mail"
+            - CRONTASK_16=    0 3 * * 2-6 root docker run --rm --net=host --entrypoint="./entrypoint.sh" -v /home/fm/dataserver:/home/dataserver -v /home/fm/http:/home/http compose_php53 bash -c  "export MYSQL_SERVER=127.0.0.1 && export SMTP_SERVER=127.0.0.1 && ./entrypoint.sh php /home/http/fullertreacymoney.com/www/public/index.php module=frontpage controller=Cron action=queue"
+            # # # garbage collector to delete the expired sessions
+            - CRONTASK_17=    0 12 * * *  root docker run --rm --net=host --entrypoint="./entrypoint.sh" -v /home/fm/dataserver:/home/dataserver -v /home/fm/http:/home/http compose_php53 bash -c  "export MYSQL_SERVER=127.0.0.1 && export SMTP_SERVER=127.0.0.1 && ./entrypoint.sh php /home/http/fullertreacymoney.com/www/public/index.php module=frontpage controller=Cron action=gc"
+            - CRONTASK_18=    0 2 * * *root docker run --rm --net=host -v /home/fm/dataserver:/home/dataserver java:7-jre bash -c "/home/dataserver/daily_ticker/get_missing_daily_data.sh"
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
-            - /usr/bin/docker:/usr/bin/docker:ro
-            - /usr/lib/x86_64-linux-gnu/libapparmor.so.1:/usr/lib/x86_64-linux-gnu/libapparmor.so.1:ro
         extends:
             file: common.yml
             service: common
         build: ../../../vipconsult/docker/cron/
+
+        1.23
 
     # backup_client:
     #     net: host  

@@ -1,2 +1,6 @@
 *env*
+exim
+http
+mysql
+tomcat
 .DS_Store

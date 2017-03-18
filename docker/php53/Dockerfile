@@ -6,7 +6,7 @@ RUN \
     echo "deb http://www.deb-multimedia.org squeeze-backports main" >> /etc/apt/sources.list && \
     apt-get update && \
     apt-get install deb-multimedia-keyring && \
-    apt-get update && apt-get install -y --no-install-recommends \
+    apt-get -o Acquire::Check-Valid-Until=false update  && apt-get install -y --no-install-recommends \
     # fuller's audio files conversion
     ffmpeg \
     curl \

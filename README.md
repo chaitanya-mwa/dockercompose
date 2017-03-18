@@ -136,5 +136,11 @@ test using  - ping www.fullertreacymoney.com - should return 192.168.99.100
 
 NOTES: to save time and space - git pull doesn't pull the audio files and the article images so these will be missing
 
+IPTABLES
+iptables -A INPUT -p tcp -s 172.18.0.0/24 --dport 8080 -j ACCEPT
+
+iptables -A INPUT -p tcp -s 0.0.0.0/0 --dport 8080 -j DROP
+iptables -A INPUT -p udp -s 0.0.0.0/0 --dport 8080 -j DROP
+
 
 

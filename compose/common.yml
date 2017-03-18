@@ -7,6 +7,8 @@ services:
             - /etc/timezone:/etc/timezone:ro
         env_file:
             - env
+        domainname: fullertreacymoney.com
+        hostname: www
         
 networks:
     default:
